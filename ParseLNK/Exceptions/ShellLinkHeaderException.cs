@@ -8,5 +8,9 @@ namespace ParseLnk.Exceptions
 {
     public class ShellLinkHeaderException : Exception
     {
+        public ShellLinkHeaderException(string message, Exception innerException) : base(message, innerException)
+        {
+            
+        }
     }
 }

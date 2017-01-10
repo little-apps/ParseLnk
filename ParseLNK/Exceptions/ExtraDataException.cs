@@ -8,5 +8,9 @@ namespace ParseLnk.Exceptions
 {
     public class ExtraDataException : Exception
     {
+        public ExtraDataException(string message, Exception innerException) : base(message, innerException)
+        {
+
+        }
     }
 }

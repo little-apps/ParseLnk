@@ -12,5 +12,10 @@ namespace ParseLnk.Exceptions
         {
             
         }
+
+        public LinkInfoException(string message, Exception innerException) : base(message, innerException)
+        {
+
+        }
     }
 }
