@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using ParseLnk.Exceptions;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace ParseLnk
@@ -71,17 +72,16 @@ namespace ParseLnk
             return (T) input;
         }
 
-        public static void AssertThrow<T>(bool condition, string message = null, Exception innerException = null) where T : Exception
+        public static void AssertThrow<T>(bool condition, string fieldName, string message = null, Exception innerException = null) where T : ExceptionBase
         {
-            AssertThrow(condition, (Exception) Activator.CreateInstance(typeof(T), message, innerException));
-        }
+            Debug.Assert(condition, message);
 
-        public static void AssertThrow(bool condition, Exception exception, bool useExceptionMsgForAssert = true)
-        {
-            Debug.Assert(condition, useExceptionMsgForAssert ? exception.Message : null);
-
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             if (!condition)
-                throw exception;
+            {
+                var ex = (ExceptionBase) Activator.CreateInstance(typeof(T), message, innerException, fieldName);
+                throw ex;
+            }
         }
     }
 }

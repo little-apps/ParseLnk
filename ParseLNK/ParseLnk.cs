@@ -39,11 +39,16 @@ namespace ParseLnk
 
             ShellLinkHeader = Stream.ReadStruct<Structs.ShellLinkHeader>();
 
-            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.HeaderSize == 0x4C, "ShellLinkHeader.HeaderSize does not equal 0x4C");
-            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.LinkClsid.Equals(new Guid(Consts.LnkClsid)), "CLSID is not LNK CLSID");
-            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.Reserved1 == 0, "Reserved fields must be 0");
-            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.Reserved2 == 0, "Reserved fields must be 0");
-            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.Reserved3 == 0, "Reserved fields must be 0");
+            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.HeaderSize == 0x4C,
+                nameof(ShellLinkHeader.HeaderSize), "ShellLinkHeader.HeaderSize does not equal 0x4C");
+            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.LinkClsid.Equals(new Guid(Consts.LnkClsid)),
+                nameof(ShellLinkHeader.LinkClsid), "CLSID is not LNK CLSID");
+            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.Reserved1 == 0, nameof(ShellLinkHeader.Reserved1),
+                "Reserved fields must be 0");
+            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.Reserved2 == 0, nameof(ShellLinkHeader.Reserved2),
+                "Reserved fields must be 0");
+            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.Reserved3 == 0, nameof(ShellLinkHeader.Reserved3),
+                "Reserved fields must be 0");
 
             if (!Enum.IsDefined(typeof(Enums.ShowWindowCommands), ShellLinkHeader.ShowCommand))
                 ShellLinkHeader.ShowCommand = Enums.ShowWindowCommands.Normal;
@@ -112,7 +117,7 @@ namespace ParseLnk
             }
             else
             {
-                Misc.AssertThrow<LinkInfoException>(LinkInfo.Header.HeaderSize == 0x1C);
+                Misc.AssertThrow<LinkInfoException>(LinkInfo.Header.HeaderSize == 0x1C, nameof(LinkInfo.Header.HeaderSize), "LinkInfo.HeaderSize must be 0x1C");
             }
 
             // Subtract all offsets that start at the beginning of LinkInfo from this
@@ -133,12 +138,15 @@ namespace ParseLnk
                 };
 
                 Misc.AssertThrow<LinkInfoException>(LinkInfo.VolumeId.Header.Size > 0x10,
+                    nameof(LinkInfo.VolumeId.Header.Size),
                     "LinkInfo.VolumeId.Header.Size is not greater than 0x10");
                 Misc.AssertThrow<LinkInfoException>(LinkInfo.VolumeId.Header.VolumeLabelOffset <
                                                     LinkInfo.VolumeId.Header.Size,
+                    nameof(LinkInfo.VolumeId.Header.VolumeLabelOffset),
                     "LinkInfo.VolumeId.Header.VolumeLabelOffset is not less than LinkInfo.VolumeId.Header.Size");
                 Misc.AssertThrow<LinkInfoException>(LinkInfo.VolumeId.VolumeLabelOffsetUnicode <
                                                     LinkInfo.VolumeId.Header.Size,
+                    nameof(LinkInfo.VolumeId.VolumeLabelOffsetUnicode),
                     "LinkInfo.VolumeId.Header.VolumeLabelOffsetUnicode is not less than LinkInfo.VolumeId.Header.Size");
 
                 if (LinkInfo.VolumeId.Header.VolumeLabelOffset == 0x14)
@@ -185,7 +193,9 @@ namespace ParseLnk
                         commonNetworkRelativeLinkStartOffset);
 
                 Misc.AssertThrow<LinkInfoException>(
-                    LinkInfo.CommonNetworkRelativeLink.Header.Size >= 0x14, "LinkInfo.CommonNetworkRelativeLink.Header.Size is less than 0x14");
+                    LinkInfo.CommonNetworkRelativeLink.Header.Size >= 0x14,
+                    nameof(LinkInfo.CommonNetworkRelativeLink.Header.Size),
+                    "LinkInfo.CommonNetworkRelativeLink.Header.Size is less than 0x14");
 
                 LinkInfo.CommonNetworkRelativeLink.NetName =
                     Marshal.PtrToStringAnsi(IntPtr.Add(pinnedBuffer.AddrOfPinnedObject(),
@@ -217,6 +227,7 @@ namespace ParseLnk
                         Enums.CommonNetworkRelativeLinkFlags.ValidDevice))
                 {
                     Misc.AssertThrow<LinkInfoException>(LinkInfo.CommonNetworkRelativeLink.Header.DeviceNameOffset > 0,
+                        nameof(LinkInfo.CommonNetworkRelativeLink.Header.DeviceNameOffset),
                         "ValidDevice flag cannot be set when LinkInfo.CommonNetworkRelativeLink.Header.DeviceNameOffset is equal to 0");
 
                     LinkInfo.CommonNetworkRelativeLink.DeviceName =
@@ -228,6 +239,7 @@ namespace ParseLnk
                 {
                     Misc.AssertThrow<LinkInfoException>(
                         LinkInfo.CommonNetworkRelativeLink.Header.DeviceNameOffset == 0,
+                        nameof(LinkInfo.CommonNetworkRelativeLink.Header.DeviceNameOffset),
                         "LinkInfo.CommonNetworkRelativeLink.Header.DeviceNameOffset must be 0 if ValidDevice flag is not set");
                 }
 
@@ -238,12 +250,14 @@ namespace ParseLnk
                     Misc.AssertThrow<LinkInfoException>(
                         Enum.IsDefined(typeof(Enums.NetworkProviderType),
                             LinkInfo.CommonNetworkRelativeLink.Header.NetProviderType),
+                        nameof(LinkInfo.CommonNetworkRelativeLink.Header.NetProviderType),
                         "Valid NetProviderType must be set if ValidNetType flag is set");
                 }
                 else
                 {
                     Misc.AssertThrow<LinkInfoException>(
                         LinkInfo.CommonNetworkRelativeLink.Header.NetProviderType == 0,
+                        nameof(LinkInfo.CommonNetworkRelativeLink.Header.NetProviderType),
                         "LinkInfo.CommonNetworkRelativeLink.Header.NetProviderType must be 0 if ValidNetType flag is set");
                 }
             }
@@ -309,7 +323,8 @@ namespace ParseLnk
 
             while (!AtTerminalBlock())
             {
-                Misc.AssertThrow<ExtraDataException>(Stream.BaseStream.Position != Stream.BaseStream.Length);
+                Misc.AssertThrow<ExtraDataException>(Stream.BaseStream.Position != Stream.BaseStream.Length,
+                    nameof(Stream.BaseStream.Position), "Position is at end of stream");
 
                 ExtraData.ParseExtraData(Stream);
             }
