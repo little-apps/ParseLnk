@@ -52,10 +52,29 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTestFiles.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="TestData\CommonNetworkRelativeLinkDeviceName.bin" />
+    <EmbeddedResource Include="TestData\CommonNetworkRelativeLinkNetDeviceNameUni.bin" />
+    <EmbeddedResource Include="TestData\CommonNetworkRelativeLinkNetName.bin" />
+    <EmbeddedResource Include="TestData\CommonNetworkRelativeLinkNetNameUni.bin" />
+    <EmbeddedResource Include="TestData\CommonNetworkRelativeLinkNetProviderType.bin" />
+    <EmbeddedResource Include="TestData\InvalidCommonNetworkRelativeLinkHeaderSize.bin" />
+    <EmbeddedResource Include="TestData\InvalidCommonNetworkRelativeLinkNetProviderType1.bin" />
+    <EmbeddedResource Include="TestData\InvalidCommonNetworkRelativeLinkNetProviderType2.bin" />
+    <EmbeddedResource Include="TestData\InvalidLinkHeaderClsid.bin" />
+    <EmbeddedResource Include="TestData\InvalidLinkHeaderReserved.bin" />
+    <EmbeddedResource Include="TestData\InvalidLinkHeaderSize.bin" />
+    <EmbeddedResource Include="TestData\InvalidLinkInfoVolumeIdSize.bin" />
+    <EmbeddedResource Include="TestData\InvalidLinkInfoVolumeLabelOffset.bin" />
+    <EmbeddedResource Include="TestData\InvalidLinkTargetIdListTerminalId.bin" />
+    <EmbeddedResource Include="TestData\LinkInfoCommonPathSuffix.bin" />
+    <EmbeddedResource Include="TestData\LinkInfoVolumeId.bin" />
+    <EmbeddedResource Include="TestData\MSExample.bin" />
+    <EmbeddedResource Include="TestData\Visual Studio 2015.bin" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ParseLNK\ParseLnk.csproj">
