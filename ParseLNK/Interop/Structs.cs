@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
 
 namespace ParseLnk.Interop
