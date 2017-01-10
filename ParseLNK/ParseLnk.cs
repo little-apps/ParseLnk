@@ -21,7 +21,7 @@ namespace ParseLnk
         public Structs.LinkTargetIDList LinkTargetIdList;
         public Structs.LinkInfo LinkInfo;
         public Structs.StringData StringData;
-        public readonly Blocks ExtraData = new Blocks();
+        public Blocks ExtraData = new Blocks();
 
         public Parser(string filePath)
         {
