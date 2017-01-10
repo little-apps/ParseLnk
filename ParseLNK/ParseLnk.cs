@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using ParseLnk.Exceptions;
 using ParseLnk.ExtraData;
 using ParseLnk.Interop;
 
@@ -38,11 +39,11 @@ namespace ParseLnk
 
             ShellLinkHeader = Stream.ReadStruct<Structs.ShellLinkHeader>();
 
-            Debug.Assert(ShellLinkHeader.HeaderSize == 0x4C, "ShellLinkHeader.HeaderSize does not equal 0x4C");
-            Debug.Assert(ShellLinkHeader.LinkClsid.Equals(new Guid(Consts.LnkClsid)), "CLSID is not LNK CLSID");
-            Debug.Assert(ShellLinkHeader.Reserved1 == 0, "Reserved fields must be 0");
-            Debug.Assert(ShellLinkHeader.Reserved2 == 0, "Reserved fields must be 0");
-            Debug.Assert(ShellLinkHeader.Reserved3 == 0, "Reserved fields must be 0");
+            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.HeaderSize == 0x4C, "ShellLinkHeader.HeaderSize does not equal 0x4C");
+            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.LinkClsid.Equals(new Guid(Consts.LnkClsid)), "CLSID is not LNK CLSID");
+            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.Reserved1 == 0, "Reserved fields must be 0");
+            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.Reserved2 == 0, "Reserved fields must be 0");
+            Misc.AssertThrow<ShellLinkHeaderException>(ShellLinkHeader.Reserved3 == 0, "Reserved fields must be 0");
 
             if (!Enum.IsDefined(typeof(Enums.ShowWindowCommands), ShellLinkHeader.ShowCommand))
                 ShellLinkHeader.ShowCommand = Enums.ShowWindowCommands.Normal;
@@ -100,7 +101,7 @@ namespace ParseLnk
             }
             else
             {
-                Debug.Assert(LinkInfo.Header.HeaderSize == 0x1C);
+                Misc.AssertThrow<LinkInfoException>(LinkInfo.Header.HeaderSize == 0x1C);
             }
 
             // Subtract all offsets that start at the beginning of LinkInfo from this
@@ -120,9 +121,14 @@ namespace ParseLnk
                                                                                 startOffset)
                 };
 
-                Debug.Assert(LinkInfo.VolumeId.Header.Size > 0x10);
-                Debug.Assert(LinkInfo.VolumeId.Header.VolumeLabelOffset < LinkInfo.VolumeId.Header.Size);
-                Debug.Assert(LinkInfo.VolumeId.VolumeLabelOffsetUnicode < LinkInfo.VolumeId.Header.Size);
+                Misc.AssertThrow<LinkInfoException>(LinkInfo.VolumeId.Header.Size > 0x10,
+                    "LinkInfo.VolumeId.Header.Size is not greater than 0x10");
+                Misc.AssertThrow<LinkInfoException>(LinkInfo.VolumeId.Header.VolumeLabelOffset <
+                                                    LinkInfo.VolumeId.Header.Size,
+                    "LinkInfo.VolumeId.Header.VolumeLabelOffset is not less than LinkInfo.VolumeId.Header.Size");
+                Misc.AssertThrow<LinkInfoException>(LinkInfo.VolumeId.VolumeLabelOffsetUnicode <
+                                                    LinkInfo.VolumeId.Header.Size,
+                    "LinkInfo.VolumeId.Header.VolumeLabelOffsetUnicode is not less than LinkInfo.VolumeId.Header.Size");
 
                 if (LinkInfo.VolumeId.Header.VolumeLabelOffset == 0x14)
                 {
@@ -167,7 +173,8 @@ namespace ParseLnk
                     pinnedBuffer.ReadStruct<Structs.CommonNetworkRelativeLinkHeader>(
                         commonNetworkRelativeLinkStartOffset);
 
-                Debug.Assert(LinkInfo.CommonNetworkRelativeLink.Header.Size >= 0x14);
+                Misc.AssertThrow<LinkInfoException>(
+                    LinkInfo.CommonNetworkRelativeLink.Header.Size >= 0x14, "LinkInfo.CommonNetworkRelativeLink.Header.Size is less than 0x14");
 
                 LinkInfo.CommonNetworkRelativeLink.NetName =
                     Marshal.PtrToStringAnsi(IntPtr.Add(pinnedBuffer.AddrOfPinnedObject(),
@@ -198,7 +205,8 @@ namespace ParseLnk
                     LinkInfo.CommonNetworkRelativeLink.Header.Flags.HasFlag(
                         Enums.CommonNetworkRelativeLinkFlags.ValidDevice))
                 {
-                    Debug.Assert(LinkInfo.CommonNetworkRelativeLink.Header.DeviceNameOffset > 0);
+                    Misc.AssertThrow<LinkInfoException>(LinkInfo.CommonNetworkRelativeLink.Header.DeviceNameOffset > 0,
+                        "ValidDevice flag cannot be set when LinkInfo.CommonNetworkRelativeLink.Header.DeviceNameOffset is equal to 0");
 
                     LinkInfo.CommonNetworkRelativeLink.DeviceName =
                         Marshal.PtrToStringAnsi(IntPtr.Add(pinnedBuffer.AddrOfPinnedObject(),
@@ -207,19 +215,25 @@ namespace ParseLnk
                 }
                 else
                 {
-                    Debug.Assert(LinkInfo.CommonNetworkRelativeLink.Header.DeviceNameOffset == 0);
+                    Misc.AssertThrow<LinkInfoException>(
+                        LinkInfo.CommonNetworkRelativeLink.Header.DeviceNameOffset == 0,
+                        "LinkInfo.CommonNetworkRelativeLink.Header.DeviceNameOffset must be 0 if ValidDevice flag is not set");
                 }
 
                 if (
                     LinkInfo.CommonNetworkRelativeLink.Header.Flags.HasFlag(
                         Enums.CommonNetworkRelativeLinkFlags.ValidNetType))
                 {
-                    Debug.Assert(Enum.IsDefined(typeof(Enums.NetworkProviderType),
-                        LinkInfo.CommonNetworkRelativeLink.Header.NetProviderType));
+                    Misc.AssertThrow<LinkInfoException>(
+                        Enum.IsDefined(typeof(Enums.NetworkProviderType),
+                            LinkInfo.CommonNetworkRelativeLink.Header.NetProviderType),
+                        "Valid NetProviderType must be set if ValidNetType flag is set");
                 }
                 else
                 {
-                    Debug.Assert(LinkInfo.CommonNetworkRelativeLink.Header.NetProviderType == 0);
+                    Misc.AssertThrow<LinkInfoException>(
+                        LinkInfo.CommonNetworkRelativeLink.Header.NetProviderType == 0,
+                        "LinkInfo.CommonNetworkRelativeLink.Header.NetProviderType must be 0 if ValidNetType flag is set");
                 }
             }
 
@@ -228,6 +242,8 @@ namespace ParseLnk
 
         private void ParseStringData()
         {
+            StringData = new Structs.StringData();
+
             if (ShellLinkHeader.LinkFlags.HasFlag(Enums.LinkFlags.HasName))
                 StringData.NameString = ReadStringData();
 
@@ -282,7 +298,7 @@ namespace ParseLnk
 
             while (!AtTerminalBlock())
             {
-                Debug.Assert(Stream.BaseStream.Position != Stream.BaseStream.Length);
+                Misc.AssertThrow<ExtraDataException>(Stream.BaseStream.Position != Stream.BaseStream.Length);
 
                 ExtraData.ParseExtraData(Stream);
             }

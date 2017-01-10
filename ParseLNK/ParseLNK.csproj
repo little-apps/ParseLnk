@@ -46,6 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\ExtraDataException.cs" />
+    <Compile Include="Exceptions\LinkInfoCommonNetworkRelativeLinkException.cs" />
+    <Compile Include="Exceptions\LinkInfoException.cs" />
+    <Compile Include="Exceptions\LinkInfoVolumeIdException.cs" />
+    <Compile Include="Exceptions\ShellLinkHeaderException.cs" />
     <Compile Include="ExtraData\ConsoleDataBlock.cs" />
     <Compile Include="ExtraData\ConsoleFEDataBlock.cs" />
     <Compile Include="ExtraData\DarwinDataBlock.cs" />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using FILETIME = System.Runtime.InteropServices.ComTypes.FILETIME;
@@ -68,6 +69,19 @@ namespace ParseLnk
         public static T CastToType<T>(this object input)
         {
             return (T) input;
+        }
+
+        public static void AssertThrow<T>(bool condition, string message = null, Exception innerException = null) where T : Exception
+        {
+            AssertThrow(condition, (Exception) Activator.CreateInstance(typeof(T), message, innerException));
+        }
+
+        public static void AssertThrow(bool condition, Exception exception, bool useExceptionMsgForAssert = true)
+        {
+            Debug.Assert(condition, useExceptionMsgForAssert ? exception.Message : null);
+
+            if (!condition)
+                throw exception;
         }
     }
 }
