@@ -1,4 +1,6 @@
 # ParseLnk
+[![Build status](https://ci.appveyor.com/api/projects/status/w8r49mmilo53st0j?svg=true)](https://ci.appveyor.com/project/little-apps/parselnk)
+
 A C# library to read .lnk files (which are mostly used in the Windows operating system)
 
 ### License ###
