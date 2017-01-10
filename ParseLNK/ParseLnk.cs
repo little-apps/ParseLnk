@@ -35,7 +35,7 @@ namespace ParseLnk
 
         public void Parse()
         {
-            Stream.BaseStream.Seek(0, SeekOrigin.Begin);
+            Reset();
 
             ShellLinkHeader = Stream.ReadStruct<Structs.ShellLinkHeader>();
 
@@ -62,6 +62,17 @@ namespace ParseLnk
             ParseStringData();
 
             ParseExtraData();
+        }
+
+        private void Reset()
+        {
+            Stream.BaseStream.Seek(0, SeekOrigin.Begin);
+
+            ShellLinkHeader = new Structs.ShellLinkHeader();
+            LinkTargetIdList = new Structs.LinkTargetIDList();
+            LinkInfo = new Structs.LinkInfo();
+            StringData = new Structs.StringData();
+            ExtraData = new Blocks();
         }
         
         private void ParseLinkTargetIdList()
