@@ -1,7 +1,7 @@
 ﻿using System;
 using ParseLnk;
 
-namespace Driver
+namespace Tests
 {
     class Program
     {
