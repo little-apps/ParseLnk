@@ -11,7 +11,7 @@ namespace Tests
     [TestFixture]
     public class UnitTestFiles
     {
-        private string ResourcePrefix => "Tests.TestData";
+        private static string ResourcePrefix => "Tests.TestData";
         
         [Test]
         public void TestCommonNetworkRelativeLinkDeviceName()
