@@ -54,9 +54,9 @@ namespace ParseLnk
 
         public static DateTime ToDateTime(this FILETIME time)
         {
-            ulong high = (ulong)time.dwHighDateTime;
-            uint low = (uint)time.dwLowDateTime;
-            long fileTime = (long)((high << 32) + low);
+            var high = (ulong)time.dwHighDateTime;
+            var low = (uint)time.dwLowDateTime;
+            var fileTime = (long)((high << 32) + low);
             try
             {
                 return DateTime.FromFileTimeUtc(fileTime);
