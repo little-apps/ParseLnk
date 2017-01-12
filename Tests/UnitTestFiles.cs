@@ -181,6 +181,15 @@ namespace Tests
             Assert.AreEqual(nameof(parseLnk.LinkInfo.VolumeId.Header.VolumeLabelOffset), ex.FieldName);
         }
 
+        [Test]
+        public void TestInvalidLinkTargetIdListTerminalId()
+        {
+            var parseLnk = new Parser(GetTestData("InvalidLinkTargetIdListTerminalId.bin"));
+
+            var ex = (LinkTargetIdListException)Assert.Catch(typeof(LinkTargetIdListException), () => parseLnk.Parse());
+            Assert.AreEqual(nameof(parseLnk.LinkTargetIdList.List.TerminalID), ex.FieldName);
+        }
+
         private static DateTime ToDateTime(FILETIME time)
         {
             var high = (ulong)time.dwHighDateTime;
