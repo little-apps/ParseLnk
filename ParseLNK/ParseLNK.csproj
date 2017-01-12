@@ -49,6 +49,7 @@
     <Compile Include="Exceptions\ExceptionBase.cs" />
     <Compile Include="Exceptions\ExtraDataException.cs" />
     <Compile Include="Exceptions\LinkInfoException.cs" />
+    <Compile Include="Exceptions\LinkTargetIdListException.cs" />
     <Compile Include="Exceptions\ShellLinkHeaderException.cs" />
     <Compile Include="ExtraData\ConsoleDataBlock.cs" />
     <Compile Include="ExtraData\ConsoleFEDataBlock.cs" />

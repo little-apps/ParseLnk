@@ -107,7 +107,7 @@ namespace ParseLnk
             LinkTargetIdList.List.TerminalID = Stream.ReadStruct<ushort>();
 
             if (LinkTargetIdList.List.TerminalID != 0)
-                throw new LinkTargetIdList("LinkTargetIdList.TerminalID must be 0",
+                throw new LinkTargetIdListException("LinkTargetIdList.TerminalID must be 0",
                     nameof(LinkTargetIdList.List.TerminalID));
         }
 
