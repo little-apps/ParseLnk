@@ -121,7 +121,8 @@ namespace ParseLnk
             }
             else
             {
-                Misc.AssertThrow<LinkInfoException>(LinkInfo.Header.HeaderSize == 0x1C, nameof(LinkInfo.Header.HeaderSize), "LinkInfo.HeaderSize must be 0x1C");
+                if (LinkInfo.Header.HeaderSize != 0x1C)
+                    throw new LinkInfoException("LinkInfo.HeaderSize must be 0x1C", nameof(LinkInfo.Header.HeaderSize));
             }
 
             // Subtract all offsets that start at the beginning of LinkInfo from this
