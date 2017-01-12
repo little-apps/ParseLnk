@@ -36,7 +36,7 @@ namespace ParseLnk
 
             ShellLinkHeader = Stream.ReadStruct<Structs.ShellLinkHeader>();
 
-            if (ShellLinkHeader.HeaderSize == 0x4C)
+            if (ShellLinkHeader.HeaderSize != 0x4C)
                 throw new ShellLinkHeaderException("ShellLinkHeader.HeaderSize does not equal 0x4C",
                     nameof(ShellLinkHeader.HeaderSize));
 
