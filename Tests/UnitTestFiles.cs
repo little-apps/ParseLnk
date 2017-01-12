@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.InteropServices.ComTypes;
 using NUnit.Framework;
 using ParseLnk;
+using ParseLnk.Exceptions;
 using ParseLnk.Interop;
 
 namespace Tests
@@ -133,6 +134,15 @@ namespace Tests
 
             Assert.NotZero(parseLnk.ExtraData.TrackerDataBlocks.Count);
             Assert.AreEqual("chris-xps", parseLnk.ExtraData.TrackerDataBlocks[0].Body.MachineId);
+        }
+
+        [Test]
+        public void TestInvalidLinkHeaderClsid()
+        {
+            var parseLnk = new Parser(GetTestData("InvalidLinkHeaderClsid.bin"));
+            
+            var ex = (ShellLinkHeaderException)Assert.Catch(typeof(ShellLinkHeaderException), () => parseLnk.Parse());
+            Assert.AreEqual(nameof(parseLnk.ShellLinkHeader.LinkClsid), ex.FieldName);
         }
 
         private static DateTime ToDateTime(FILETIME time)
