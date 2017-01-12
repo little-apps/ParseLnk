@@ -71,17 +71,5 @@ namespace ParseLnk
         {
             return (T) input;
         }
-
-        public static void AssertThrow<T>(bool condition, string fieldName, string message = null, Exception innerException = null) where T : ExceptionBase
-        {
-            Debug.Assert(condition, message);
-
-            // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            if (!condition)
-            {
-                var ex = (ExceptionBase) Activator.CreateInstance(typeof(T), message, innerException, fieldName);
-                throw ex;
-            }
-        }
     }
 }

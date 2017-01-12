@@ -4,9 +4,9 @@ namespace ParseLnk.Exceptions
 {
     public class LinkInfoException : ExceptionBase
     {
-        public LinkInfoException() : base("LinkInfo could not be parsed")
+        public LinkInfoException(string message, string fieldName) : base(message)
         {
-            
+            FieldName = fieldName;
         }
 
         public LinkInfoException(string message, Exception innerException, string fieldName) : base(message, innerException)
