@@ -154,6 +154,15 @@ namespace Tests
             Assert.AreEqual(nameof(parseLnk.ShellLinkHeader.Reserved1), ex.FieldName);
         }
 
+        [Test]
+        public void TestInvalidLinkHeaderSize()
+        {
+            var parseLnk = new Parser(GetTestData("InvalidLinkHeaderSize.bin"));
+
+            var ex = (ShellLinkHeaderException)Assert.Catch(typeof(ShellLinkHeaderException), () => parseLnk.Parse());
+            Assert.AreEqual(nameof(parseLnk.ShellLinkHeader.HeaderSize), ex.FieldName);
+        }
+
         private static DateTime ToDateTime(FILETIME time)
         {
             var high = (ulong)time.dwHighDateTime;
