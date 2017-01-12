@@ -163,6 +163,15 @@ namespace Tests
             Assert.AreEqual(nameof(parseLnk.ShellLinkHeader.HeaderSize), ex.FieldName);
         }
 
+        [Test]
+        public void TestInvalidLinkInfoVolumeIdSize()
+        {
+            var parseLnk = new Parser(GetTestData("InvalidLinkInfoVolumeIdSize.bin"));
+
+            var ex = (LinkInfoException)Assert.Catch(typeof(LinkInfoException), () => parseLnk.Parse());
+            Assert.AreEqual(nameof(parseLnk.LinkInfo.VolumeId.Header.Size), ex.FieldName);
+        }
+
         private static DateTime ToDateTime(FILETIME time)
         {
             var high = (ulong)time.dwHighDateTime;
