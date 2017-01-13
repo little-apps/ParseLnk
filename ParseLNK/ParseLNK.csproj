@@ -68,7 +68,7 @@
     <Compile Include="Interop\Enums.cs" />
     <Compile Include="Interop\Structs.cs" />
     <Compile Include="Misc.cs" />
-    <Compile Include="ParseLnk.cs" />
+    <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
