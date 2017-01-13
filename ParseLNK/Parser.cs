@@ -11,7 +11,6 @@ namespace ParseLnk
 {
     public class Parser
     {
-
         private StreamReader Stream { get; }
 
         public Structs.ShellLinkHeader ShellLinkHeader;
