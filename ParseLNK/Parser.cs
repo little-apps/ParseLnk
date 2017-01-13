@@ -53,11 +53,6 @@ namespace ParseLnk
 
             if (!Enum.IsDefined(typeof(Enums.ShowWindowCommands), ShellLinkHeader.ShowCommand))
                 ShellLinkHeader.ShowCommand = Enums.ShowWindowCommands.Normal;
-            
-            Console.WriteLine("Creation Time: {0}", ShellLinkHeader.CreationTime.ToDateTime());
-            Console.WriteLine("Access Time: {0}", ShellLinkHeader.AccessTime.ToDateTime());
-            Console.WriteLine("Write Time: {0}", ShellLinkHeader.WriteTime.ToDateTime());
-            Console.WriteLine("File Size: {0}", ShellLinkHeader.FileSize);
 
             if (ShellLinkHeader.LinkFlags.HasFlag(Enums.LinkFlags.HasLinkTargetIdList))
                 ParseLinkTargetIdList();
