@@ -40,7 +40,7 @@ namespace ParseLnk.ExtraData
             
         }
 
-        public void ParseExtraData(StreamReader stream)
+        public void ParseExtraData(Stream stream)
         {
             var header = stream.ReadStruct<Structs.ExtraDataHeader>();
 

@@ -7,7 +7,7 @@ namespace ParseLnk.ExtraData
 {
     public class ShimDataBlock : ExtraDataBase<Structs.ShimDataBlock>
     {
-        public ShimDataBlock(StreamReader stream, Structs.ExtraDataHeader header) : base(stream, header)
+        public ShimDataBlock(Stream stream, Structs.ExtraDataHeader header) : base(stream, header)
         {
             Debug.Assert(Header.Size >= 0x00000088);
         }

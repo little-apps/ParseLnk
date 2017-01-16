@@ -11,22 +11,18 @@ namespace ParseLnk
 {
     public class Parser
     {
-        private StreamReader Stream { get; }
+        private Stream Stream { get; }
 
         public Structs.ShellLinkHeader ShellLinkHeader;
         public Structs.LinkTargetIDList LinkTargetIdList;
         public Structs.LinkInfo LinkInfo;
         public Structs.StringData StringData;
         public Blocks ExtraData = new Blocks();
+        
 
-        public Parser(string filePath)
+        public Parser(Stream stream)
         {
-            Stream = new StreamReader(filePath);
-        }
-
-        public Parser(StreamReader streamReader)
-        {
-            Stream = streamReader;
+            Stream = stream;
         }
 
         /// <summary>
@@ -65,7 +61,7 @@ namespace ParseLnk
         /// </summary>
         private void Reset()
         {
-            Stream.BaseStream.Seek(0, SeekOrigin.Begin);
+            Stream.Seek(0, SeekOrigin.Begin);
 
             ShellLinkHeader = new Structs.ShellLinkHeader();
             LinkTargetIdList = new Structs.LinkTargetIDList();
@@ -121,7 +117,7 @@ namespace ParseLnk
                 var itemId = new Structs.ItemID {Size = Stream.ReadStruct<ushort>()};
 
                 itemId.Data = new byte[itemId.Size - 2];
-                Stream.BaseStream.Read(itemId.Data, 0, itemId.Data.Length);
+                Stream.Read(itemId.Data, 0, itemId.Data.Length);
 
                 LinkTargetIdList.List.ItemIDList.Add(itemId);
 
@@ -157,7 +153,7 @@ namespace ParseLnk
             var startOffset = LinkInfo.Header.HeaderSize;
             var linkInfoBody = new byte[LinkInfo.Header.Size - startOffset];
 
-            Stream.BaseStream.Read(linkInfoBody, 0, linkInfoBody.Length);
+            Stream.Read(linkInfoBody, 0, linkInfoBody.Length);
 
             var pinnedBuffer = linkInfoBody.GetGCHandle();
 
@@ -330,7 +326,7 @@ namespace ParseLnk
         private string ReadStringData()
         {
             var sizeBuffer = new byte[2];
-            Stream.BaseStream.Read(sizeBuffer, 0, 2);
+            Stream.Read(sizeBuffer, 0, 2);
 
             var pinnedBuffer = sizeBuffer.GetGCHandle();
 
@@ -344,14 +340,14 @@ namespace ParseLnk
             if (ShellLinkHeader.LinkFlags.HasFlag(Enums.LinkFlags.IsUnicode))
             {
                 var buffer = new byte[size * 2];
-                Stream.BaseStream.Read(buffer, 0, size * 2);
+                Stream.Read(buffer, 0, size * 2);
 
                 return Encoding.Unicode.GetString(buffer);
             }
             else
             {
                 var buffer = new byte[size];
-                Stream.BaseStream.Read(buffer, 0, size);
+                Stream.Read(buffer, 0, size);
 
                 return Encoding.Default.GetString(buffer);
             }
@@ -363,13 +359,13 @@ namespace ParseLnk
         /// </summary>
         private void ParseExtraData()
         {
-            if (Stream.BaseStream.Position == Stream.BaseStream.Length)
+            if (Stream.Position == Stream.Length)
                 return;
 
             while (!AtTerminalBlock())
             {
-                if (Stream.BaseStream.Position == Stream.BaseStream.Length)
-                    throw new ExtraDataException("Position is at end of stream", nameof(Stream.BaseStream.Position));
+                if (Stream.Position == Stream.Length)
+                    throw new ExtraDataException("Position is at end of stream", nameof(Stream.Position));
 
                 ExtraData.ParseExtraData(Stream);
             }
@@ -381,17 +377,17 @@ namespace ParseLnk
         /// <returns>True if at terminal block</returns>
         private bool AtTerminalBlock()
         {
-            if (Stream.BaseStream.Length - Stream.BaseStream.Position != 4)
+            if (Stream.Length - Stream.Position != 4)
                 return false;
 
             var buffer = new byte[4];
 
-            Stream.BaseStream.Read(buffer, 0, 4);
+            Stream.Read(buffer, 0, 4);
 
             if (BitConverter.ToUInt32(buffer, 0) < 0x00000004)
                 return true;
 
-            Stream.BaseStream.Seek(-4, SeekOrigin.Current);
+            Stream.Seek(-4, SeekOrigin.Current);
 
             return false;
         }

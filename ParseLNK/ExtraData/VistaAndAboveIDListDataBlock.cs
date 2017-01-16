@@ -7,7 +7,7 @@ namespace ParseLnk.ExtraData
 {
     public class VistaAndAboveIdListDataBlock : ExtraDataBase<Structs.VistaAndAboveIdListDataBlock>
     {
-        public VistaAndAboveIdListDataBlock(StreamReader stream, Structs.ExtraDataHeader header) : base(stream, header)
+        public VistaAndAboveIdListDataBlock(Stream stream, Structs.ExtraDataHeader header) : base(stream, header)
         {
             Debug.Assert(Header.Size >= 0x0000000A);
         }
@@ -23,7 +23,7 @@ namespace ParseLnk.ExtraData
                 var itemId = new Structs.ItemID { Size = Stream.ReadStruct<ushort>() };
 
                 itemId.Data = new byte[itemId.Size - 2];
-                Stream.BaseStream.Read(itemId.Data, 0, itemId.Data.Length);
+                Stream.Read(itemId.Data, 0, itemId.Data.Length);
 
                 idList.ItemIDList.Add(itemId);
 

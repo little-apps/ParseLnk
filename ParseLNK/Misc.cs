@@ -9,12 +9,12 @@ namespace ParseLnk
 {
     static class Misc
     {
-        public static T ReadStruct<T>(this StreamReader stream) where T : struct
+        public static T ReadStruct<T>(this Stream stream) where T : struct
         {
             var sz = Marshal.SizeOf(typeof(T));
             var buffer = new byte[sz];
 
-            stream.BaseStream.Read(buffer, 0, sz);
+            stream.Read(buffer, 0, sz);
 
             return buffer.ReadStruct<T>(0, (uint) sz);
         }

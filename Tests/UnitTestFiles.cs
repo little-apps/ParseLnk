@@ -205,14 +205,14 @@ namespace Tests
             }
         }
 
-        private StreamReader GetTestData(string fileName)
+        private Stream GetTestData(string fileName)
         {
             var stream = Assembly.GetCallingAssembly().GetManifestResourceStream($"{ResourcePrefix}.{fileName}");
 
             if (stream == null)
                 throw new FileNotFoundException("Resource could not be found");
 
-            return new StreamReader(stream);
+            return stream;
         }
     }
 }

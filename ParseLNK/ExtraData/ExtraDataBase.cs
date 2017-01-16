@@ -8,7 +8,7 @@ namespace ParseLnk.ExtraData
     public abstract class ExtraDataBase<T> where T : struct
     {
         public readonly Structs.ExtraDataHeader Header;
-        protected readonly StreamReader Stream;
+        protected readonly Stream Stream;
 
         public T Body { get; protected set; }
 
@@ -17,13 +17,13 @@ namespace ParseLnk.ExtraData
 
         
 
-        protected ExtraDataBase(StreamReader stream, Structs.ExtraDataHeader header)
+        protected ExtraDataBase(Stream stream, Structs.ExtraDataHeader header)
         {
             Stream = stream;
             Header = header;
             BodyLength = (uint) (Header.Size - Marshal.SizeOf<Structs.ExtraDataHeader>());
 
-            Debug.Assert(Stream.BaseStream.Length - Stream.BaseStream.Position >= BodyLength);
+            Debug.Assert(Stream.Length - Stream.Position >= BodyLength);
 
             ReadBytes();
         }
@@ -35,7 +35,7 @@ namespace ParseLnk.ExtraData
         private void ReadBytes()
         {
             BodyBytes = new byte[BodyLength];
-            Stream.BaseStream.Read(BodyBytes, 0, BodyBytes.Length);
+            Stream.Read(BodyBytes, 0, BodyBytes.Length);
         }
 
         /// <summary>

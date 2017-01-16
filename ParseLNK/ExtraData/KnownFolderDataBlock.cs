@@ -6,7 +6,7 @@ namespace ParseLnk.ExtraData
 {
     public class KnownFolderDataBlock : ExtraDataBase<Structs.KnownFolderDataBlock>
     {
-        public KnownFolderDataBlock(StreamReader stream, Structs.ExtraDataHeader header) : base(stream, header)
+        public KnownFolderDataBlock(Stream stream, Structs.ExtraDataHeader header) : base(stream, header)
         {
             Debug.Assert(Header.Size == 0x0000001C);
         }

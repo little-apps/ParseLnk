@@ -6,7 +6,7 @@ namespace ParseLnk.ExtraData
 {
     public class TrackerDataBlock : ExtraDataBase<Structs.TrackerDataBlock>
     {
-        public TrackerDataBlock(StreamReader stream, Structs.ExtraDataHeader header) : base(stream, header)
+        public TrackerDataBlock(Stream stream, Structs.ExtraDataHeader header) : base(stream, header)
         {
             Debug.Assert(Header.Size == 0x00000060);
         }
