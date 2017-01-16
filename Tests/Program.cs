@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using ParseLnk;
 
 namespace Tests
@@ -13,8 +14,30 @@ namespace Tests
                 return;
             }
 
-            var parseLnk = new Parser(args[0]);
-            parseLnk.Parse();
+            StreamReader streamReader;
+
+            try
+            {
+                streamReader = new StreamReader(args[0]);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Unable to open StreamReader: {e.Message}");
+                return;
+            }
+
+            try
+            {
+                var parseLnk = new Parser(streamReader.BaseStream);
+                parseLnk.Parse();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Unable to parse file: {e.Message}");
+                return;
+            }
+            
+
         }
     }
 }
