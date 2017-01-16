@@ -19,9 +19,23 @@ namespace ParseLnk
         public Structs.StringData StringData;
         public Blocks ExtraData = new Blocks();
         
-
+        /// <summary>
+        /// Constructor for Parser
+        /// </summary>
+        /// <param name="stream">Stream to read</param>
+        /// <exception cref="ArgumentNullException">Thrown if stream is null</exception>
+        /// <exception cref="ArgumentException">Thrown if stream cannot be read or seeking is not supported</exception>
         public Parser(Stream stream)
         {
+            if (stream == null)
+                throw new ArgumentNullException(nameof(stream), "Stream cannot be null");
+
+            if (!stream.CanRead)
+                throw new ArgumentException("Stream cannot be read", nameof(stream));
+
+            if (!stream.CanSeek)
+                throw new ArgumentException("Strem doesn't support seeking", nameof(stream));
+
             Stream = stream;
         }
 
