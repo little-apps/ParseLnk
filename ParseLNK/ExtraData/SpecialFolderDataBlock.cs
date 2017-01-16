@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using ParseLnk.Exceptions;
 using ParseLnk.Interop;
 
 namespace ParseLnk.ExtraData
@@ -8,7 +9,8 @@ namespace ParseLnk.ExtraData
     {
         public SpecialFolderDataBlock(Stream stream, Structs.ExtraDataHeader header) : base(stream, header)
         {
-            Debug.Assert(Header.Size == 0x00000010);
+            if (Header.Size != 0x00000010)
+                throw new ExtraDataException("Header size is not 0x10", nameof(Header.Size));
         }
         
     }

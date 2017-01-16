@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using ParseLnk.Exceptions;
 using ParseLnk.Interop;
 
 namespace ParseLnk.ExtraData
@@ -22,8 +23,10 @@ namespace ParseLnk.ExtraData
             Stream = stream;
             Header = header;
             BodyLength = (uint) (Header.Size - Marshal.SizeOf<Structs.ExtraDataHeader>());
-
-            Debug.Assert(Stream.Length - Stream.Position >= BodyLength);
+            
+            if (Stream.Length - Stream.Position < BodyLength)
+                throw new ExtraDataException("Body length is larger than amount of space left in stream",
+                    nameof(BodyLength));
 
             ReadBytes();
         }

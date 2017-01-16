@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using ParseLnk.Exceptions;
 using ParseLnk.Interop;
 
 namespace ParseLnk.ExtraData
@@ -8,7 +9,8 @@ namespace ParseLnk.ExtraData
     {
         public PropertyStoreDataBlock(Stream stream, Structs.ExtraDataHeader header) : base(stream, header)
         {
-            Debug.Assert(Header.Size >= 0x0000000C);
+            if (Header.Size < 0x0000000C)
+                throw new ExtraDataException("Header size is less than 0x0C", nameof(Header.Size));
         }
 
         public override void Read()

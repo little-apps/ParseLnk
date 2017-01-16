@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using ParseLnk.Exceptions;
 using ParseLnk.Interop;
 
 namespace ParseLnk.ExtraData
@@ -9,7 +10,8 @@ namespace ParseLnk.ExtraData
     {
         public VistaAndAboveIdListDataBlock(Stream stream, Structs.ExtraDataHeader header) : base(stream, header)
         {
-            Debug.Assert(Header.Size >= 0x0000000A);
+            if (Header.Size < 0x0000000A)
+                throw new ExtraDataException("Header size is less than 0x0A", nameof(Header.Size));
         }
 
         public override void Read()
@@ -33,7 +35,8 @@ namespace ParseLnk.ExtraData
             idList.TerminalID = Stream.ReadStruct<ushort>();
 
             Body = new Structs.VistaAndAboveIdListDataBlock {IdList = idList};
-            Debug.Assert(Body.IdList.TerminalID == 0);
+            if (Body.IdList.TerminalID != 0)
+                throw new ExtraDataException("Terminal ID is not 0", nameof(Body.IdList.TerminalID));
         }
     }
 }

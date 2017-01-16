@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using ParseLnk.Exceptions;
 using ParseLnk.Interop;
 
 namespace ParseLnk.ExtraData
@@ -44,9 +45,16 @@ namespace ParseLnk.ExtraData
         {
             var header = stream.ReadStruct<Structs.ExtraDataHeader>();
 
-            Debug.Assert(SignatureBlocks.ContainsKey(header.Signature));
-            Debug.Assert(SignatureBlocks[header.Signature].BaseType != null);
-            Debug.Assert(SignatureBlocks[header.Signature].BaseType.GUID.Equals(typeof(ExtraDataBase<>).GUID));
+            if (!SignatureBlocks.ContainsKey(header.Signature))
+                throw new ExtraDataException("Header signature is not recognized", nameof(header.Signature));
+
+            if (SignatureBlocks[header.Signature].BaseType == null)
+                throw new ExtraDataException("Specified extra data class does not have a base class",
+                    nameof(SignatureBlocks));
+
+            if (!SignatureBlocks[header.Signature].BaseType.GUID.Equals(typeof(ExtraDataBase<>).GUID))
+                throw new ExtraDataException("Specified extra data class does not inherit ExtraDataBase<>",
+                    nameof(SignatureBlocks));
 
             var type = SignatureBlocks[header.Signature];
             var extraData = Activator.CreateInstance(type, stream, header) as dynamic;
