@@ -47,26 +47,7 @@ namespace ParseLnk
         {
             Reset();
 
-            ShellLinkHeader = Stream.ReadStruct<Structs.ShellLinkHeader>();
-
-            if (ShellLinkHeader.HeaderSize != 0x4C)
-                throw new ShellLinkHeaderException("ShellLinkHeader.HeaderSize does not equal 0x4C",
-                    nameof(ShellLinkHeader.HeaderSize));
-
-            if (!ShellLinkHeader.LinkClsid.Equals(new Guid(Consts.LnkClsid)))
-                throw new ShellLinkHeaderException("CLSID is not LNK CLSID", nameof(ShellLinkHeader.LinkClsid));
-
-            if (ShellLinkHeader.Reserved1 != 0)
-                throw new ShellLinkHeaderException("Reserved fields must be 0", nameof(ShellLinkHeader.Reserved1));
-
-            if (ShellLinkHeader.Reserved2 != 0)
-                throw new ShellLinkHeaderException("Reserved fields must be 0", nameof(ShellLinkHeader.Reserved2));
-
-            if (ShellLinkHeader.Reserved3 != 0)
-                throw new ShellLinkHeaderException("Reserved fields must be 0", nameof(ShellLinkHeader.Reserved3));
-
-            if (!Enum.IsDefined(typeof(Enums.ShowWindowCommands), ShellLinkHeader.ShowCommand))
-                ShellLinkHeader.ShowCommand = Enums.ShowWindowCommands.Normal;
+            ParseShellLinkHeader();
 
             if (ShellLinkHeader.LinkFlags.HasFlag(Enums.LinkFlags.HasLinkTargetIdList))
                 ParseLinkTargetIdList();
@@ -91,6 +72,34 @@ namespace ParseLnk
             LinkInfo = new Structs.LinkInfo();
             StringData = new Structs.StringData();
             ExtraData = new Blocks();
+        }
+
+        /// <summary>
+        /// Parses the ShellLinkHeader
+        /// </summary>
+        /// <exception cref="ShellLinkHeaderException">Thrown if ShellLinkHeader is not valid</exception>
+        private void ParseShellLinkHeader()
+        {
+            ShellLinkHeader = Stream.ReadStruct<Structs.ShellLinkHeader>();
+
+            if (ShellLinkHeader.HeaderSize != 0x4C)
+                throw new ShellLinkHeaderException("ShellLinkHeader.HeaderSize does not equal 0x4C",
+                    nameof(ShellLinkHeader.HeaderSize));
+
+            if (!ShellLinkHeader.LinkClsid.Equals(new Guid(Consts.LnkClsid)))
+                throw new ShellLinkHeaderException("CLSID is not LNK CLSID", nameof(ShellLinkHeader.LinkClsid));
+
+            if (ShellLinkHeader.Reserved1 != 0)
+                throw new ShellLinkHeaderException("Reserved fields must be 0", nameof(ShellLinkHeader.Reserved1));
+
+            if (ShellLinkHeader.Reserved2 != 0)
+                throw new ShellLinkHeaderException("Reserved fields must be 0", nameof(ShellLinkHeader.Reserved2));
+
+            if (ShellLinkHeader.Reserved3 != 0)
+                throw new ShellLinkHeaderException("Reserved fields must be 0", nameof(ShellLinkHeader.Reserved3));
+
+            if (!Enum.IsDefined(typeof(Enums.ShowWindowCommands), ShellLinkHeader.ShowCommand))
+                ShellLinkHeader.ShowCommand = Enums.ShowWindowCommands.Normal;
         }
         
         /// <summary>
