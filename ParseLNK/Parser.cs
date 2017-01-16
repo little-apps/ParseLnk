@@ -162,7 +162,8 @@ namespace ParseLnk
                 };
 
                 if (LinkInfo.VolumeId.Header.Size <= 0x10)
-                    throw new LinkInfoException("LinkInfo.VolumeId.Header.Size is not greater than 0x10", nameof(LinkInfo.VolumeId.Header.Size));
+                    throw new LinkInfoException("LinkInfo.VolumeId.Header.Size is not greater than 0x10",
+                        nameof(LinkInfo.VolumeId.Header.Size));
 
                 if (LinkInfo.VolumeId.Header.VolumeLabelOffset >= LinkInfo.VolumeId.Header.Size)
                     throw new LinkInfoException(
