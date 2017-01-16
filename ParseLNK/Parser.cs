@@ -29,6 +29,20 @@ namespace ParseLnk
             Stream = streamReader;
         }
 
+        /// <summary>
+        /// Parses the file as LNK format
+        /// </summary>
+        /// <exception cref="ShellLinkHeaderException">Thrown if the ShellLinkHeader is not formatted properly</exception>
+        /// <exception cref="LinkTargetIdListException">Thrown if the LinkTargetIdList can't be parsed</exception>
+        /// <exception cref="LinkInfoException">Thrown if the LinkInfo can't be parsed</exception>
+        /// <exception cref="ExtraDataException">Thrown if the ExtraData can't be parsed</exception>
+        /// <example>
+        /// try {
+        ///     parser.Parse();
+        /// } catch (ParseLnk.Exceptions.ExceptionBase) {
+        ///     // Couldnt be parsed
+        /// }
+        /// </example>
         public void Parse()
         {
             Reset();
@@ -65,6 +79,9 @@ namespace ParseLnk
             ParseExtraData();
         }
 
+        /// <summary>
+        /// Resets the Stream position to the beginning and clears the fields
+        /// </summary>
         private void Reset()
         {
             Stream.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -76,6 +93,10 @@ namespace ParseLnk
             ExtraData = new Blocks();
         }
         
+        /// <summary>
+        /// Parses the LinkTargetIdList
+        /// </summary>
+        /// <exception cref="LinkTargetIdListException">Thrown if doesn't get to terminal ID</exception>
         private void ParseLinkTargetIdList()
         {
             LinkTargetIdList = new Structs.LinkTargetIDList
@@ -105,6 +126,10 @@ namespace ParseLnk
                     nameof(LinkTargetIdList.List.TerminalID));
         }
 
+        /// <summary>
+        /// Parses the LinkInfo
+        /// </summary>
+        /// <exception cref="LinkInfoException">Thrown if LinkInfo is not proper</exception>
         private void ParseLinkInfo()
         {
             LinkInfo = new Structs.LinkInfo {Header = Stream.ReadStruct<Structs.LinkInfoHeader>()};
@@ -265,6 +290,9 @@ namespace ParseLnk
             pinnedBuffer.Free();
         }
 
+        /// <summary>
+        /// Parses the StringData
+        /// </summary>
         private void ParseStringData()
         {
             StringData = new Structs.StringData();
@@ -285,6 +313,10 @@ namespace ParseLnk
                 StringData.IconLocation = ReadStringData();
         }
 
+        /// <summary>
+        /// Reads string data by first getting the length (as ushort) and then getting the string using the length
+        /// </summary>
+        /// <returns></returns>
         private string ReadStringData()
         {
             var sizeBuffer = new byte[2];
@@ -316,6 +348,9 @@ namespace ParseLnk
             
         }
 
+        /// <summary>
+        /// Parses the ExtraData
+        /// </summary>
         private void ParseExtraData()
         {
             if (Stream.BaseStream.Position == Stream.BaseStream.Length)
@@ -330,6 +365,10 @@ namespace ParseLnk
             }
         }
 
+        /// <summary>
+        /// Determines if at terminal block (last 4 bytes is less than 0x4)
+        /// </summary>
+        /// <returns>True if at terminal block</returns>
         private bool AtTerminalBlock()
         {
             if (Stream.BaseStream.Length - Stream.BaseStream.Position != 4)
