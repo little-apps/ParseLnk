@@ -24,7 +24,7 @@ namespace ParseLnk.Interop
             public FILETIME AccessTime;
             public FILETIME WriteTime;
             public uint FileSize;
-            public uint IconIndex;
+            public int IconIndex;
             public Enums.ShowWindowCommands ShowCommand;
             public HotKeyFlags HotKey;
             public short Reserved1;
