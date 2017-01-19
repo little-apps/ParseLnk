@@ -372,7 +372,8 @@ namespace ParseLnk.Interop
             public bool AutoPosition;
             public uint HistoryBufferSize;
             public uint NumberOfHistoryBuffers;
-            public uint HistoryNoDup;
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool HistoryNoDup;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
             public uint[] ColorTable;
         }
