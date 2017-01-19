@@ -27,9 +27,10 @@ namespace ParseLnk.Interop
             RunWithShimLayer = 1 << 17,
             ForceNoLinkTrack = 1 << 18,
             EnableTargetMetadata = 1 << 19,
-            DisableKnownFolderTracking = 1 << 20,
-            DisableKnownFolderAlias = 1 << 21,
-            AllowLinkToLink = 1 << 22,
+            DisableLinkPathTracking = 1 << 20,
+            DisableKnownFolderTracking = 1 << 21,
+            DisableKnownFolderAlias = 1 << 22,
+            AllowLinkToLink = 1 << 23,
             UnaliasOnSave = 1 << 24,
             PreferEnviromentPath = 1 << 25,
             KeepLocalIdListForUncTarget = 1 << 26
