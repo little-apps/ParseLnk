@@ -356,6 +356,7 @@ namespace ParseLnk.Interop
             public ushort WindowOriginY;
             public int Unused1;
             public int Unused2;
+            public uint FontSize;
             public Enums.FontFamily FontFamily;
             public uint FontWeight;
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
