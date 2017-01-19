@@ -362,7 +362,8 @@ namespace ParseLnk.Interop
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
             public string FaceName;
             public uint CursorSize;
-            public uint FullScreen;
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool FullScreen;
             public uint QuickEdit;
             public uint InsertMode;
             public uint AutoPosition;
