@@ -364,9 +364,12 @@ namespace ParseLnk.Interop
             public uint CursorSize;
             [MarshalAs(UnmanagedType.Bool)]
             public bool FullScreen;
-            public uint QuickEdit;
-            public uint InsertMode;
-            public uint AutoPosition;
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool QuickEdit;
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool InsertMode;
+            [MarshalAs(UnmanagedType.Bool)]
+            public bool AutoPosition;
             public uint HistoryBufferSize;
             public uint NumberOfHistoryBuffers;
             public uint HistoryNoDup;
