@@ -22,13 +22,13 @@ namespace ParseLnk.Interop
             public Guid LinkClsid;
 
             /// <summary>
-            /// A LinkFlags structure that specifies information about the shell link and the
+            /// A <see cref="Enums.LinkFlags"/> structure that specifies information about the shell link and the
             /// presence of optional portions of the structure.
             /// </summary>
             public Enums.LinkFlags LinkFlags;
 
             /// <summary>
-            /// A FileAttributes structure that specifies information about the link target.
+            /// A <see cref="System.IO.FileAttributes"/> structure that specifies information about the link target.
             /// </summary>
             public FileAttributes FileAttributes;
 
