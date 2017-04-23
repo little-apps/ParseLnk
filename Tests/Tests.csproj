@@ -56,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
     <EmbeddedResource Include="TestData\CommonNetworkRelativeLinkDeviceName.bin" />
     <EmbeddedResource Include="TestData\CommonNetworkRelativeLinkNetDeviceNameUni.bin" />
     <EmbeddedResource Include="TestData\CommonNetworkRelativeLinkNetName.bin" />
@@ -75,6 +74,7 @@
     <EmbeddedResource Include="TestData\LinkInfoVolumeId.bin" />
     <EmbeddedResource Include="TestData\MSExample.bin" />
     <EmbeddedResource Include="TestData\Visual Studio 2015.bin" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ParseLNK\ParseLnk.csproj">
