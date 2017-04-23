@@ -1,5 +1,5 @@
 # ParseLnk
-[![Build status](https://ci.appveyor.com/api/projects/status/w8r49mmilo53st0j?svg=true)](https://ci.appveyor.com/project/little-apps/parselnk)
+[![Build status](https://ci.appveyor.com/api/projects/status/w8r49mmilo53st0j?svg=true)](https://ci.appveyor.com/project/little-apps/parselnk) [![Coverage Status](https://coveralls.io/repos/github/little-apps/ParseLnk/badge.svg?branch=master)](https://coveralls.io/github/little-apps/ParseLnk?branch=master)
 
 A C# library to read .lnk files (which are mostly used in the Windows operating system)
 
